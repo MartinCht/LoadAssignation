@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="container__header">
+    <img alt="logo" />
+    <div class="container__header__descriptions">
+      <own-title>Lamcia</own-title>
+      <own-sub-title>Monitoreo de Viajes</own-sub-title>
+    </div>
+  </div>
+  <div class="container__body">
+    <div class="container__body__menu">
+      <div *ngFor="let item of items" class="container__body__menu__item">
+        <img class="container__body__menu__item__image" [src]="item.icon" />
+        <p>{{ item.title }}</p>
+      </div>
+    </div>
+    <div class="container__body__footer">
+      <div class="container__body__menu__item">
+        <img
+          class="container__body__menu__item__image"
+          src="assets/icons/gear-solid.svg"
+        />
+        <p>Configuración</p>
+      </div>
+    </div>
+  </div>
+</div>
