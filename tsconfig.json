@@ -8,6 +8,9 @@
       ],
       "@TripsMonitoring": [
         "dist/trips-monitoring"
+      ],
+      "@TripsMonitoring/*": [
+        "dist/trips-monitoring/*"
       ]
     },
     "baseUrl": "./",

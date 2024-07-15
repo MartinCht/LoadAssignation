@@ -8,10 +8,18 @@
   </div>
   <div class="container__body">
     <div class="container__body__menu">
-      <div *ngFor="let item of items" class="container__body__menu__item">
-        <img class="container__body__menu__item__image" [src]="item.icon" />
-        <p>{{ item.title }}</p>
-      </div>
+      <nav>
+        <ng-container *ngFor="let item of items">
+          <div
+            [routerLink]="'/' + item.route"
+            routerLinkActive="active-link"
+            class="container__body__menu__item"
+          >
+            <img class="container__body__menu__item__image" [src]="item.icon" />
+            <p>{{ item.title }}</p>
+          </div>
+        </ng-container>
+      </nav>
     </div>
     <div class="container__body__footer">
       <div class="container__body__menu__item">

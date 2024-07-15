@@ -6,14 +6,12 @@ import { NavBarItem } from '../../models/nav-bar-item.model';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
-export class NavBarComponent implements OnInit {
-  items: NavBarItem[];
+export class NavBarComponent {
+  items: NavBarItem[] = [
+    { title: 'Tablero', icon: 'assets/icons/desktop-solid.svg', route: 'tablero' },
+    { title: 'Graficos', icon: 'assets/icons/chart-pie-solid.svg', route: 'graficos' },
+    { title: 'Viajes', icon: 'assets/icons/truck-solid.svg', route: 'viajes' },
+  ];
 
-  ngOnInit(): void {
-    this.items = [
-      { title: 'Tablero', icon: 'assets/icons/desktop-solid.svg' },
-      { title: 'Graficos', icon: 'assets/icons/chart-pie-solid.svg' },
-      { title: 'Viajes', icon: 'assets/icons/truck-solid.svg' },
-    ]
-  }
+  constructor() { }
 }

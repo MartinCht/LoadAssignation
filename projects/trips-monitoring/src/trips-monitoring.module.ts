@@ -1,16 +1,13 @@
 import { NgModule } from '@angular/core';
-import { TripsMonitoringComponent } from './trips-monitoring.component';
-
-
+import { HomeComponent } from './lib/components/home/home.component';
 
 @NgModule({
   declarations: [
-    TripsMonitoringComponent
+    HomeComponent,
   ],
   imports: [
   ],
   exports: [
-    TripsMonitoringComponent
   ]
 })
 export class TripsMonitoringModule { }
