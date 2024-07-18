@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { TableComponent } from '@CommonUI';
 import { HomeComponent } from './lib/components/home/home.component';
 
 @NgModule({
@@ -6,6 +7,7 @@ import { HomeComponent } from './lib/components/home/home.component';
     HomeComponent,
   ],
   imports: [
+    TableComponent
   ],
   exports: [
   ]

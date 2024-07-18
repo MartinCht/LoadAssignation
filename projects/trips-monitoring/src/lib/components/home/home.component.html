@@ -1,1 +1,13 @@
-<p>home works!</p>
+<div class="home_container">
+  <div class="home_container__header">
+    <p>searchbar with filter</p>
+    <p>action buttons</p>
+  </div>
+  <div class="home_container__body">
+    <own-table
+      class="home_container__body__table"
+      [columns]="columns"
+      [dataSource]="dataSource"
+    ></own-table>
+  </div>
+</div>
