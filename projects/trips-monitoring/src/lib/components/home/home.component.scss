@@ -6,6 +6,14 @@
 
   &__header {
     display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+
+    &__buttons {
+      own-button {
+        padding-right: 1rem;
+      }
+    }
   }
 
   &__body {

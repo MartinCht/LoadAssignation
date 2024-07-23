@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_TOOLTIP_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/tooltip';
@@ -37,6 +37,11 @@ export class TableComponent implements OnInit {
   @Input() columns: TableColumn<any>[] = [];
   @Input() dataSource: any[] = [];
   @Input() getRowClass: (row: any) => string = () => '';
+  @Input() itemsNumber: number = this.dataSource.length;
+  @Input() pageIndex: number;
+  @Input() pageSize: number;
+  @Output() pageChange = new EventEmitter<{ pageIndex: number, pageSize: number }>();
+
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -50,13 +55,18 @@ export class TableComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this.paginator.pageIndex = this.pageIndex;
+    this.paginator.pageSize = this.pageSize;
     this.tableDataSource.paginator = this.paginator;
-
   }
 
   onActionClick(row: any, action?: (element: any) => void) {
     if (action) {
       action(row);
     }
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageChange.emit({ pageIndex: event.pageIndex, pageSize: event.pageSize });
   }
 }

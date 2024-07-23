@@ -1,0 +1,31 @@
+<div class="dialog-container">
+  <own-title mat-dialog-title class="dialog-container__title"
+    >Importar viajes</own-title
+  >
+  <div mat-dialog-content class="dialog-container__content">
+    <div
+      cdkDropList
+      (cdkDropListDropped)="onFileDrop($event)"
+      (dragover)="onDragOver($event)"
+      (dragenter)="onDragEnter($event)"
+      (dragleave)="onDragLeave($event)"
+      class="drop-container"
+    >
+      <p>Proximamente se implementará... O capaz que no.</p>
+      <p>Usar el botón de seleccionar archivo.</p>
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileChange($event)"
+        accept=".xlsx, .xls"
+        hidden
+      />
+    </div>
+  </div>
+  <div mat-dialog-actions class="dialog-container__actions">
+    <own-button color="tertiary" (click)="fileInput.click()"
+      >Seleccionar archivo.
+    </own-button>
+    <own-button (click)="onClose()">Cerrar</own-button>
+  </div>
+</div>

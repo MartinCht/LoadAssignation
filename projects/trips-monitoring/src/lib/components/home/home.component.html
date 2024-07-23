@@ -1,13 +1,21 @@
 <div class="home_container">
   <div class="home_container__header">
     <p>searchbar with filter</p>
-    <p>action buttons</p>
+    <div class="home_container__header__buttons">
+      <own-button (click)="handleImportClick()">Importar</own-button>
+      <own-button color="secondary">Exportar</own-button>
+    </div>
   </div>
   <div class="home_container__body">
     <own-table
       class="home_container__body__table"
       [columns]="columns"
       [dataSource]="dataSource"
+      [itemsNumber]="itemsNumber"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [getRowClass]="getRowClass"
+      (pageChange)="onPageChange($event)"
     ></own-table>
   </div>
 </div>

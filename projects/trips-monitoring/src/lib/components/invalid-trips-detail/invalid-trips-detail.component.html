@@ -1,0 +1,14 @@
+<div class="dialog-container">
+  <own-title mat-dialog-title class="dialog-container__title"
+    >Viajes con errores</own-title
+  >
+  <div mat-dialog-content class="dialog-container__content">
+    <p>Listado de viajes</p>
+    <div *ngFor="let item of data">
+      {{ item | json }}
+    </div>
+  </div>
+  <div mat-dialog-actions class="dialog-container__actions">
+    <own-button (click)="onClose()">Cerrar</own-button>
+  </div>
+</div>
