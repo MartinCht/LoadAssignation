@@ -10,6 +10,16 @@
           <ng-container *ngSwitchCase="'value'">
             {{ column.value(element) }}
           </ng-container>
+          <ng-container *ngSwitchCase="'multiValue'">
+            <div class="multi-value__container">
+              <p
+                *ngFor="let item of column.multiValue(element)"
+                class="multi-value__item"
+              >
+                {{ item }}
+              </p>
+            </div>
+          </ng-container>
           <ng-container *ngSwitchCase="'action'">
             <button
               mat-button

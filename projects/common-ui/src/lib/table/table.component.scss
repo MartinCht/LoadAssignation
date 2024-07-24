@@ -1,0 +1,12 @@
+.multi-value {
+  &__container {
+    padding: 0.2rem 0;
+  }
+  &__item {
+    margin: 0;
+    width: 22rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}

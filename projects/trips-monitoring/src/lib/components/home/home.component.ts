@@ -19,8 +19,8 @@ export class HomeComponent implements OnInit {
   columns: TableColumn<TripsResponse>[] = [
     { columnDef: 'truckNumber', header: 'Equipo', type: 'value', value: (element) => element.truckNumber },
     { columnDef: 'roadmapNumber', header: 'Hoja de Ruta', type: 'value', value: (element) => `${element.number}` },
-    { columnDef: 'origin', header: 'Origen-Localidad', type: 'value', value: (element) => element.routes.map(r => `<p>${r.origin}</p>`).join() },
-    { columnDef: 'destination', header: 'Destino-Localidad', type: 'value', value: (element) => element.routes.map(r => `<p>${r.destination}</p>`).join() },
+    { columnDef: 'origin', header: 'Origen-Localidad', type: 'multiValue', multiValue: (element) => element.routes.map(r => r.origin) },
+    { columnDef: 'destination', header: 'Destino-Localidad', type: 'multiValue', multiValue: (element) => element.routes.map(r => r.destination) },
     { columnDef: 'startDate', header: 'Fecha Partida', type: 'value', value: (element) => `${element.startDate}` },
     { columnDef: 'totalKm', header: 'Total de KMs', type: 'value', value: (element) => `${element.totalKm}` },
     { columnDef: 'unitsAmount', header: 'Recuento de Unidades', type: 'value', value: (element) => `${element.unitsAmount}` },
