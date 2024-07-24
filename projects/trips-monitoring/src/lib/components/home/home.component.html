@@ -1,6 +1,15 @@
 <div class="home_container">
   <div class="home_container__header">
-    <p>searchbar with filter</p>
+    <form [formGroup]="searchForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Search</mat-label>
+        <input
+          matInput
+          placeholder="Type to search"
+          formControlName="searchText"
+        />
+      </mat-form-field>
+    </form>
     <div class="home_container__header__buttons">
       <own-button (click)="handleImportClick()">Importar</own-button>
       <own-button color="secondary">Exportar</own-button>

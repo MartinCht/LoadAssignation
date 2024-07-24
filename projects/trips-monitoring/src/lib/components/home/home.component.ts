@@ -3,12 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TableColumn, DragAndDropComponent } from '@CommonUI';
 
-import { filter } from 'rxjs';
+import { debounceTime, filter, Subject } from 'rxjs';
 
 import { InvalidTripsDetailComponent } from '../invalid-trips-detail/invalid-trips-detail.component';
 import { TripsResponse } from '../../models/search-trips-response.model';
 import { Trip } from '../../models/trips.model';
 import { TripsMonitoringService } from '../../services/trips-monitoring.service';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'own-home',
@@ -24,21 +25,32 @@ export class HomeComponent implements OnInit {
     { columnDef: 'startDate', header: 'Fecha Partida', type: 'value', value: (element) => `${element.startDate}` },
     { columnDef: 'totalKm', header: 'Total de KMs', type: 'value', value: (element) => `${element.totalKm}` },
     { columnDef: 'unitsAmount', header: 'Recuento de Unidades', type: 'value', value: (element) => `${element.unitsAmount}` },
-    { columnDef: 'tag', header: 'Tag', type: 'tag', tagType: () => 'info', value: (element: any) => element.tagText },
-    { columnDef: 'action', header: 'Acciones', type: 'action', value: () => '', action: (element) => this.handleAction(element) },
   ];
 
   dataSource: TripsResponse[];
   selectedFile: File | null = null;
   loading: boolean;
-  searchText: string;
   itemsNumber: number;
   pageSize: number = 10;
   pageIndex: number = 0;
+  searchForm: FormGroup<{ searchText: FormControl<string | null> }>;
 
-  constructor(private dialog: MatDialog, private tripsMonitoringService: TripsMonitoringService) { }
-
+  constructor(
+    private dialog: MatDialog,
+    private fb: FormBuilder,
+    private tripsMonitoringService: TripsMonitoringService
+  ) {
+    this.searchForm = this.fb.group({
+      searchText: ''
+    });
+  }
   ngOnInit(): void {
+    this.searchForm.controls.searchText.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(() => {
+      this.doSearch();
+    });
+
     this.doSearch();
   }
 
@@ -56,7 +68,7 @@ export class HomeComponent implements OnInit {
   doSearch() {
     this.loading = true;
 
-    this.tripsMonitoringService.search(this.searchText, this.pageIndex, this.pageSize)
+    this.tripsMonitoringService.search(this.searchForm.value.searchText ?? '', this.pageIndex, this.pageSize)
       .subscribe(response => {
         this.itemsNumber = response.total;
         this.dataSource = response.results
