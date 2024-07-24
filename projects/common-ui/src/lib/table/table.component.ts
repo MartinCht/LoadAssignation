@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_TOOLTIP_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/tooltip';
@@ -42,8 +42,12 @@ export class TableComponent implements OnInit {
   @Input() pageSize: number;
   @Output() pageChange = new EventEmitter<{ pageIndex: number, pageSize: number }>();
 
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(private paginatorIntl: MatPaginatorIntl) {
+    this.paginatorIntl.itemsPerPageLabel = "Registros por página";
+    this.paginatorIntl.getRangeLabel = (page, pageSize, length) => `${page * pageSize + 1} – ${Math.min((page + 1) * pageSize, length)} de ${length}`;
+  }
 
   tableDataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = [];
