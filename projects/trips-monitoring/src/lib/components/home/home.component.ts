@@ -1,15 +1,16 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TableColumn, DragAndDropComponent } from '@CommonUI';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { TableColumn, DragAndDropComponent, TableComponent } from '@CommonUI';
 
-import { debounceTime, filter, Subject } from 'rxjs';
+import { debounceTime, filter } from 'rxjs';
 
 import { InvalidTripsDetailComponent } from '../invalid-trips-detail/invalid-trips-detail.component';
 import { TripsResponse } from '../../models/search-trips-response.model';
 import { Trip } from '../../models/trips.model';
 import { TripsMonitoringService } from '../../services/trips-monitoring.service';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { SearchFilters } from '../../models/search-filters.model';
 
 @Component({
   selector: 'own-home',
@@ -33,7 +34,18 @@ export class HomeComponent implements OnInit {
   itemsNumber: number;
   pageSize: number = 10;
   pageIndex: number = 0;
-  searchForm: FormGroup<{ searchText: FormControl<string | null> }>;
+  isDrawerOpen: any;
+  searchForm: FormGroup<{
+    searchText: FormControl<string | null>,
+    filters: FormGroup<{
+      truckNumber: FormControl<string | null>;
+      beach: FormControl<string | null>;
+      startDate: FormControl<string | null>;
+      endDate: FormControl<string | null>;
+    }>
+  }>;
+
+  @ViewChild(TableComponent) ownTable: TableComponent;
 
   constructor(
     private dialog: MatDialog,
@@ -41,13 +53,20 @@ export class HomeComponent implements OnInit {
     private tripsMonitoringService: TripsMonitoringService
   ) {
     this.searchForm = this.fb.group({
-      searchText: ''
+      searchText: [''],
+      filters: this.fb.group({
+        truckNumber: [''],
+        beach: [''],
+        startDate: [''],
+        endDate: ['']
+      })
     });
   }
   ngOnInit(): void {
     this.searchForm.controls.searchText.valueChanges.pipe(
       debounceTime(300)
     ).subscribe(() => {
+      this.ownTable.goToFirstPage();
       this.doSearch();
     });
 
@@ -67,11 +86,11 @@ export class HomeComponent implements OnInit {
 
   doSearch() {
     this.loading = true;
-
-    this.tripsMonitoringService.search(this.searchForm.value.searchText ?? '', this.pageIndex, this.pageSize)
+    const filters = this.searchForm.value.filters as SearchFilters;
+    this.tripsMonitoringService.search(this.searchForm.value.searchText ?? '', filters, this.pageIndex, this.pageSize)
       .subscribe(response => {
         this.itemsNumber = response.total;
-        this.dataSource = response.results
+        this.dataSource = response.results;
       }).add(() => this.loading = false);
   }
 
@@ -96,5 +115,22 @@ export class HomeComponent implements OnInit {
     this.pageSize = pageSize;
     this.pageIndex = pageIndex;
     this.doSearch();
+  }
+
+  toggleDrawer() {
+    this.isDrawerOpen = !this.isDrawerOpen;
+  }
+
+  cleanFilters() {
+    this.searchForm.controls.filters.reset();
+    this.ownTable.goToFirstPage();
+    this.toggleDrawer();
+  }
+
+  handleFiltersChange() {
+    this.loading = true;
+    this.ownTable.goToFirstPage();
+    this.doSearch();
+    this.toggleDrawer();
   }
 }

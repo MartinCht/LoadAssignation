@@ -1,1 +1,1 @@
-export type ColumnType = 'value' | 'action' | 'tag';
+export type ColumnType = 'value' | 'multiValue' | 'action' | 'tag';

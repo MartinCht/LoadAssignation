@@ -59,8 +59,6 @@ export class TableComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.paginator.pageIndex = this.pageIndex;
-    this.paginator.pageSize = this.pageSize;
     this.tableDataSource.paginator = this.paginator;
   }
 
@@ -72,5 +70,9 @@ export class TableComponent implements OnInit {
 
   onPageChange(event: PageEvent): void {
     this.pageChange.emit({ pageIndex: event.pageIndex, pageSize: event.pageSize });
+  }
+
+  goToFirstPage() {
+    this.paginator.firstPage();
   }
 }

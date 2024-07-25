@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { SearchTripsResponse } from '../models/search-trips-response.model';
 import { SearchTripsRequest } from '../models/search-trips-request.model';
 import { TripAssignationExcelResponse } from '../models/trip-assignation-excel-response.model copy';
+import { SearchFilters } from '../models/search-filters.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,10 @@ export class TripsMonitoringService {
 
   constructor(private httpClient: HttpClient) { }
 
-  search(searchText = '', page = 0, pageSize = 10): Observable<SearchTripsResponse> {
+  search(searchText = '', filters: SearchFilters, page = 0, pageSize = 10): Observable<SearchTripsResponse> {
     const url = this.apiUrl + '/search';
 
-    const request = new SearchTripsRequest(searchText, page, pageSize);
+    const request = new SearchTripsRequest(searchText, filters, page, pageSize);
 
     return this.httpClient.post<SearchTripsResponse>(url, request);
   }

@@ -1,30 +1,61 @@
-<div class="home_container">
-  <div class="home_container__header">
-    <form [formGroup]="searchForm">
-      <mat-form-field appearance="fill">
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          placeholder="Type to search"
-          formControlName="searchText"
-        />
-      </mat-form-field>
-    </form>
-    <div class="home_container__header__buttons">
-      <own-button (click)="handleImportClick()">Importar</own-button>
-      <own-button color="secondary">Exportar</own-button>
+<mat-drawer-container [hasBackdrop]="true" class="drawer-container">
+  <mat-drawer
+    mode="over"
+    position="end"
+    [opened]="isDrawerOpen"
+    [disableClose]="true"
+    class="drawer"
+  >
+    <ng-container *ngTemplateOutlet="drawerContent"></ng-container>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="home_container">
+      <p class="title">Viajes</p>
+      <div class="home_container__header">
+        <div class="home_container__header__search_bar">
+          <form [formGroup]="searchForm">
+            <mat-form-field appearance="fill">
+              <mat-label>Busqueda</mat-label>
+              <input
+                matInput
+                placeholder="Ej. 267, 00055111"
+                formControlName="searchText"
+              />
+            </mat-form-field>
+            <own-button (click)="toggleDrawer()"> Filtros </own-button>
+          </form>
+        </div>
+        <div class="home_container__header__buttons">
+          <own-button (click)="handleImportClick()">Importar</own-button>
+          <own-button color="secondary">Exportar</own-button>
+        </div>
+      </div>
+      <div class="home_container__body">
+        <own-table
+          class="home_container__body__table"
+          [columns]="columns"
+          [dataSource]="dataSource"
+          [itemsNumber]="itemsNumber"
+          [getRowClass]="getRowClass"
+          [pageIndex]="pageIndex"
+          (pageChange)="onPageChange($event)"
+        ></own-table>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
+
+<ng-template #drawerContent>
+  <div class="filters">
+    <div class="filters__header">
+      <own-title>Filtros</own-title>
+    </div>
+    <div class="filters__body">Filtros --</div>
+    <div class="filters__footer">
+      <own-button color="secondary" (click)="cleanFilters()"
+        >Borrar Filtros</own-button
+      >
+      <own-button (click)="handleFiltersChange()">Aceptar</own-button>
     </div>
   </div>
-  <div class="home_container__body">
-    <own-table
-      class="home_container__body__table"
-      [columns]="columns"
-      [dataSource]="dataSource"
-      [itemsNumber]="itemsNumber"
-      [pageIndex]="pageIndex"
-      [pageSize]="pageSize"
-      [getRowClass]="getRowClass"
-      (pageChange)="onPageChange($event)"
-    ></own-table>
-  </div>
-</div>
+</ng-template>
