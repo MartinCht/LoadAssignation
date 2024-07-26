@@ -30,7 +30,8 @@ export class HomeComponent implements OnInit {
 
   dataSource: TripsResponse[];
   selectedFile: File | null = null;
-  loading: boolean;
+  isLoading: boolean;
+  isDownloading: boolean;
   itemsNumber: number;
   pageSize: number = 10;
   pageIndex: number = 0;
@@ -85,13 +86,13 @@ export class HomeComponent implements OnInit {
   }
 
   doSearch() {
-    this.loading = true;
+    this.isLoading = true;
     const filters = this.searchForm.value.filters as SearchFilters;
     this.tripsMonitoringService.search(this.searchForm.value.searchText ?? '', filters, this.pageIndex, this.pageSize)
       .subscribe(response => {
         this.itemsNumber = response.total;
         this.dataSource = response.results;
-      }).add(() => this.loading = false);
+      }).add(() => this.isLoading = false);
   }
 
   handleImportClick() {
@@ -100,7 +101,7 @@ export class HomeComponent implements OnInit {
     dialogRef.afterClosed()
       .pipe(filter(result => result))
       .subscribe((result: File) => {
-        this.loading = true;
+        this.isLoading = true;
         this.tripsMonitoringService.uploadTripsAssignationExcel(result)
           .subscribe(result => {
             if (result.length !== 0)
@@ -108,6 +109,15 @@ export class HomeComponent implements OnInit {
             this.doSearch();
           });
       });
+  }
+
+  handleExportClick() {
+    this.isDownloading = true;
+
+    const filters = this.searchForm.value.filters as SearchFilters;
+
+    this.tripsMonitoringService.downloadTripsAssignationExcel(this.searchForm.value.searchText ?? '', filters)
+      .subscribe(() => this.isDownloading = false);
   }
 
   onPageChange(event: { pageIndex: number, pageSize: number }): void {
@@ -128,7 +138,7 @@ export class HomeComponent implements OnInit {
   }
 
   handleFiltersChange() {
-    this.loading = true;
+    this.isLoading = true;
     this.ownTable.goToFirstPage();
     this.doSearch();
     this.toggleDrawer();

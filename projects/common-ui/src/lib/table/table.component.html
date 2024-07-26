@@ -8,12 +8,12 @@
       <td mat-cell *matCellDef="let element">
         <ng-container [ngSwitch]="column.type">
           <ng-container *ngSwitchCase="'value'">
-            {{ column.value(element) }}
+            {{ column?.value(element) }}
           </ng-container>
           <ng-container *ngSwitchCase="'multiValue'">
             <div class="multi-value__container">
               <p
-                *ngFor="let item of column.multiValue(element)"
+                *ngFor="let item of column?.multiValue(element)"
                 class="multi-value__item"
               >
                 {{ item }}
@@ -26,13 +26,13 @@
               class=""
               (click)="onActionClick(element, column.action)"
             >
-              {{ column.value(element) }}
+              {{ column?.value(element) }}
             </button>
           </ng-container>
           <ng-container *ngSwitchCase="'tag'">
             <ng-container>
               <own-tag
-                [text]="column.value(element)"
+                [text]="column?.value(element) ?? ''"
                 [type]="column?.tagType(element) || 'info'"
               ></own-tag>
             </ng-container>

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { saveAs } from 'file-saver';
 import { SearchTripsResponse } from '../models/search-trips-response.model';
 import { SearchTripsRequest } from '../models/search-trips-request.model';
 import { TripAssignationExcelResponse } from '../models/trip-assignation-excel-response.model copy';
 import { SearchFilters } from '../models/search-filters.model';
+import { DownloadTripsRequest } from '../models/download-trips-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +31,18 @@ export class TripsMonitoringService {
     formData.append('file', file, file.name);
 
     return this.httpClient.post<TripAssignationExcelResponse[]>(url, formData);
+  }
+
+  downloadTripsAssignationExcel(searchText = '', filters: SearchFilters): Observable<void> {
+    const url = this.apiUrl + '/download';
+
+    const request = new DownloadTripsRequest(searchText, filters);
+
+    return this.httpClient.post(url, request, { responseType: 'blob' }).pipe(
+      map((data: Blob) => {
+        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        saveAs(blob, 'Cargas.xlsx');
+      })
+    );
   }
 }
